@@ -40,7 +40,7 @@ def get_html(url, data=None):
     return response.text
 
 
-def download_douyin(url):
+def download_douyin(num, url):
     rsp = get_html(url)
     patt = 'playAddr: "(.*?)",'
     play = re.compile(patt).findall(rsp)[0].replace("playwm", "play")
@@ -52,11 +52,11 @@ def download_douyin(url):
         'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1'
     }
     res = requests.get(play, stream=True, headers=header)
-    num = 219
-    path = 'E:/nixin/douyin/video/20200406/'
+
+    path = 'E:/nixin/douyin/video/20200416/'
     if not os.path.exists(path):
         os.makedirs(path)
-    pathinfo = 'E:/nixin/douyin/video/20200406/%d.mp4' % num  # %d 用于整数输出   %s用于字符串输出
+    pathinfo = 'E:/nixin/douyin/video/20200416/%d.mp4' % num  # %d 用于整数输出   %s用于字符串输出
     total_size = int(res.headers['Content-Length'])
     print('这是视频的总大小：', total_size)
 
@@ -65,7 +65,7 @@ def download_douyin(url):
         with open(pathinfo, 'wb') as file:
             # file.write(res.content)
             # print(pathinfo + '下载完成啦啦啦啦啦')
-            num += 1
+
             # 当流下载时，下面是优先推荐的获取内容方式，iter_content()函数就是得到文件的内容，指定chunk_size=1024，大小可以自己设置哟，设置的意思就是下载一点流写一点流到磁盘中
             for chunk in res.iter_content(chunk_size=1024):
                 if chunk:
@@ -87,6 +87,19 @@ def download_douyin(url):
     pass
 
 
+def batch_download_douyin(start, pathtxt):
+    with open(pathtxt) as f:
+        f_url_list = f.readlines()  # 得到的是一个list类型
+        for a in f_url_list:
+            print(a.strip())
+            download_douyin(start, a.strip())
+            start += 1
+            time.sleep(random.choice(range(3, 6)))
+
+    pass
+
+
 if __name__ == '__main__':
-    download_douyin("https://v.douyin.com/c2AwJv")
+    # download_douyin(23, "https://v.douyin.com/cPXLbt")
+    batch_download_douyin(75, "E:/nixin/douyin/video/20200416/1.txt")
     pass
