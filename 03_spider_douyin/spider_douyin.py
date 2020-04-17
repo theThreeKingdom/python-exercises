@@ -103,4 +103,3 @@ if __name__ == '__main__':
     # download_douyin(23, "https://v.douyin.com/cPXLbt")
     batch_download_douyin(75, "E:/nixin/douyin/video/20200416/1.txt")
     pass
-
