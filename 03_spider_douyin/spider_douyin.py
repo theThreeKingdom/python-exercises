@@ -44,7 +44,13 @@ def download_douyin(num, url):
     rsp = get_html(url)
     patt = 'playAddr: "(.*?)",'
     play = re.compile(patt).findall(rsp)[0].replace("playwm", "play")
-    print(play)
+
+    if not play.startswith('http'):
+        return 0
+
+    print(type(play))
+    print("url="+play)
+
     header = {
         'Accept': '*/*',
         'Accept-Encoding': 'identity;q=1, *;q=0',
@@ -53,10 +59,10 @@ def download_douyin(num, url):
     }
     res = requests.get(play, stream=True, headers=header)
 
-    path = 'E:/nixin/douyin/video/20200416/'
+    path = 'E:/nixin/douyin/video/20200418/'
     if not os.path.exists(path):
         os.makedirs(path)
-    pathinfo = 'E:/nixin/douyin/video/20200416/%d.mp4' % num  # %d 用于整数输出   %s用于字符串输出
+    pathinfo = 'E:/nixin/douyin/video/20200418/%d.mp4' % num  # %d 用于整数输出   %s用于字符串输出
     total_size = int(res.headers['Content-Length'])
     print('这是视频的总大小：', total_size)
 
@@ -84,6 +90,7 @@ def download_douyin(num, url):
                     # 下载进度条部分end
 
             print('\n')  # 每一条打印在屏幕上换行输出
+        return 1
     pass
 
 
@@ -92,8 +99,8 @@ def batch_download_douyin(start, pathtxt):
         f_url_list = f.readlines()  # 得到的是一个list类型
         for a in f_url_list:
             print(a.strip())
-            download_douyin(start, a.strip())
-            start += 1
+            if download_douyin(start, a.strip()) > 0:
+                start += 1
             time.sleep(random.choice(range(3, 6)))
 
     pass
@@ -101,5 +108,5 @@ def batch_download_douyin(start, pathtxt):
 
 if __name__ == '__main__':
     # download_douyin(23, "https://v.douyin.com/cPXLbt")
-    batch_download_douyin(75, "E:/nixin/douyin/video/20200416/1.txt")
+    batch_download_douyin(7, "E:/nixin/douyin/video/20200418/1.txt")
     pass
