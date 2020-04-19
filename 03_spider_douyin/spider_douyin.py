@@ -59,10 +59,10 @@ def download_douyin(num, url):
     }
     res = requests.get(play, stream=True, headers=header)
 
-    path = 'E:/nixin/douyin/video/20200418/'
+    path = 'E:/nixin/douyin/video/20200419/'
     if not os.path.exists(path):
         os.makedirs(path)
-    pathinfo = 'E:/nixin/douyin/video/20200418/%d.mp4' % num  # %d 用于整数输出   %s用于字符串输出
+    pathinfo = 'E:/nixin/douyin/video/20200419/%d.mp4' % num  # %d 用于整数输出   %s用于字符串输出
     total_size = int(res.headers['Content-Length'])
     print('这是视频的总大小：', total_size)
 
@@ -107,6 +107,6 @@ def batch_download_douyin(start, pathtxt):
 
 
 if __name__ == '__main__':
-    # download_douyin(23, "https://v.douyin.com/cPXLbt")
-    batch_download_douyin(7, "E:/nixin/douyin/video/20200418/1.txt")
+    # download_douyin(56, "https://v.douyin.com/3wV6PQ")
+    batch_download_douyin(80, "E:/nixin/douyin/video/20200419/1.txt")
     pass
